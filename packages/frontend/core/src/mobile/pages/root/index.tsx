@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { GlobalDialogs } from '../../dialogs';
-import { CustomThemeModifier } from './custom-theme';
-import { FindInPageModal } from './find-in-page/find-in-page-modal';
+import { MobileSignInModal } from '../../views/sign-in/modal';
 
 export const RootWrapper = () => {
   const globalServerService = useService(GlobalServerService);
@@ -34,9 +33,8 @@ export const RootWrapper = () => {
     <FrameworkScope scope={globalServerService.server.scope}>
       <GlobalDialogs />
       <NotificationCenter />
+      <MobileSignInModal />
       <Outlet />
-      <CustomThemeModifier />
-      {BUILD_CONFIG.isElectron && <FindInPageModal />}
     </FrameworkScope>
   );
 };
