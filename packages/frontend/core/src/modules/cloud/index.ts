@@ -12,6 +12,7 @@ export { ValidatorProvider } from './provider/validator';
 export { WebSocketAuthProvider } from './provider/websocket-auth';
 export { AccountChanged, AuthService } from './services/auth';
 export { CaptchaService } from './services/captcha';
+export { EventSourceService } from './services/eventsource';
 export { FetchService } from './services/fetch';
 export { GlobalServerService } from './services/global-server';
 export { GraphQLService } from './services/graphql';
@@ -52,6 +53,7 @@ import { ServerScope } from './scopes/server';
 import { AuthService } from './services/auth';
 import { CaptchaService } from './services/captcha';
 import { CloudDocMetaService } from './services/cloud-doc-meta';
+import { EventSourceService } from './services/eventsource';
 import { FetchService } from './services/fetch';
 import { GlobalServerService } from './services/global-server';
 import { GraphQLService } from './services/graphql';
@@ -84,6 +86,7 @@ export function configureCloudModule(framework: Framework) {
     .scope(ServerScope)
     .service(ServerService, [ServerScope])
     .service(FetchService, [RawFetchProvider, ServerService])
+    .service(EventSourceService, [ServerService])
     .service(GraphQLService, [FetchService])
     .service(
       WebSocketService,
