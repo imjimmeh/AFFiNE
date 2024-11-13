@@ -26,7 +26,7 @@ const doc = await storage.getDoc('my-first-doc')
 ### Use All storages together
 
 ```ts
-import { SpaceStorageClient } from '@affine/nbstore';
+import { SpaceStorage } from '@affine/nbstore';
 import type { ConnectionStatus } from '@affine/nbstore';
 import { IndexedDBDocStorage } from '@affine/nbstore/idb';
 import { SqliteBlobStorage } from '@affine/nbstore/sqlite';
