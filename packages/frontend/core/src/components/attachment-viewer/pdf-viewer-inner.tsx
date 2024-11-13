@@ -4,6 +4,7 @@ import type {
   PDFRendererState,
   PDFStatus,
 } from '@affine/core/modules/pdf';
+import type { PageSize } from '@affine/core/modules/pdf/renderer/types';
 import {
   Item,
   List,
@@ -51,6 +52,28 @@ export const PDFViewerInner = ({ pdf, state }: PDFViewerInnerProps) => {
     []
   );
 
+  const fitToPage = useCallback(
+    (viewportInfo: PageSize, actualSize: PageSize) => {
+      const { width: vw, height: vh } = viewportInfo;
+      const { width: w, height: h } = actualSize;
+      let width = 0;
+      let height = 0;
+      if (h / w > vh / vw) {
+        height = vh;
+        width = (w / h) * height;
+      } else {
+        width = vw;
+        height = (h / w) * width;
+      }
+      return {
+        width: Math.ceil(width),
+        height: Math.ceil(height),
+        aspectRatio: width / height,
+      };
+    },
+    []
+  );
+
   const onScroll = useCallback(() => {
     const el = pagesScrollerRef.current;
     if (!el) return;
@@ -81,17 +104,24 @@ export const PDFViewerInner = ({ pdf, state }: PDFViewerInnerProps) => {
     (
       index: number,
       _: unknown,
-      { width, height, onPageSelect, pageClassName }: PDFVirtuosoContext
+      {
+        viewportInfo,
+        meta,
+        onPageSelect,
+        resize,
+        pageClassName,
+      }: PDFVirtuosoContext
     ) => {
       return (
         <PDFPageRenderer
-          key={index}
+          key={`${pageClassName}-${index}`}
           pdf={pdf}
-          width={width}
-          height={height}
           pageNum={index}
-          onSelect={onPageSelect}
           className={pageClassName}
+          viewportInfo={viewportInfo}
+          actualSize={meta.pageSizes[index]}
+          onSelect={onPageSelect}
+          resize={resize}
         />
       );
     },
@@ -100,22 +130,28 @@ export const PDFViewerInner = ({ pdf, state }: PDFViewerInnerProps) => {
 
   const thumbnailsConfig = useMemo(() => {
     const { height: vh } = viewportInfo;
-    const { pageCount: t, height: h, width: w } = state.meta;
-    const p = h / (w || 1);
-    const pw = THUMBNAIL_WIDTH;
-    const ph = Math.ceil(pw * p);
-    const height = Math.min(vh - 60 - 24 - 24 - 2 - 8, t * ph + (t - 1) * 12);
+    const { pageCount: t, pageSizes } = state.meta;
+    const height = Math.min(
+      vh - 60 - 24 - 24 - 2 - 8,
+      pageSizes.reduce((h, { height }) => h + height, 0) + (t - 1) * 12
+    );
     return {
       context: {
-        width: pw,
-        height: ph,
         onPageSelect,
+        viewportInfo: {
+          width: THUMBNAIL_WIDTH,
+          height,
+        },
+        meta: state.meta,
+        resize: fitToPage,
         pageClassName: styles.pdfThumbnail,
       },
       style: { height },
     };
-  }, [state, viewportInfo, onPageSelect]);
+  }, [state, viewportInfo, onPageSelect, fitToPage]);
 
+  // 1. works fine if they are the same size
+  // 2. uses the `observeIntersection` when targeting different sizes
   const scrollSeekConfig = useMemo<ScrollSeekConfiguration>(() => {
     return {
       enter: velocity => Math.abs(velocity) > 1024,
@@ -154,8 +190,12 @@ export const PDFViewerInner = ({ pdf, state }: PDFViewerInnerProps) => {
           ScrollSeekPlaceholder,
         }}
         context={{
-          width: state.meta.width,
-          height: state.meta.height,
+          viewportInfo: {
+            width: viewportInfo.width - 40,
+            height: viewportInfo.height - 40,
+          },
+          meta: state.meta,
+          resize: fitToPage,
           pageClassName: styles.pdfPage,
         }}
         scrollSeekConfiguration={scrollSeekConfig}
@@ -174,9 +214,9 @@ export const PDFViewerInner = ({ pdf, state }: PDFViewerInnerProps) => {
               Scroller,
               ScrollSeekPlaceholder,
             }}
-            scrollSeekConfiguration={scrollSeekConfig}
             style={thumbnailsConfig.style}
             context={thumbnailsConfig.context}
+            scrollSeekConfiguration={scrollSeekConfig}
           />
         </div>
         <div className={clsx(['indicator', styles.pdfIndicator])}>

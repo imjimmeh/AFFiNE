@@ -45,7 +45,9 @@ class PDFRendererBackend extends OpConsumer<ClientOps> {
         observer.next(doc);
 
         return () => {
-          doc.close();
+          setTimeout(() => {
+            doc.close();
+          }, 1000); // Waits for ObjectPool GC
         };
       });
     }),
@@ -60,15 +62,32 @@ class PDFRendererBackend extends OpConsumer<ClientOps> {
         throw new Error('Document not opened');
       }
 
-      const firstPage = doc.page(0);
-      if (!firstPage) {
-        throw new Error('Document has no pages');
+      const pageCount = doc.pageCount();
+      const pageSizes = [];
+      let i = 0;
+      let maxWidth = 0;
+      let maxHeight = 0;
+
+      for (; i < pageCount; i++) {
+        const page = doc.page(i);
+        if (!page) {
+          throw new Error('Page not found');
+        }
+        const size = page.size();
+        const width = Math.ceil(size.width);
+        const height = Math.ceil(size.height);
+
+        maxWidth = Math.max(maxWidth, width);
+        maxHeight = Math.max(maxHeight, height);
+
+        pageSizes.push({ width, height });
+        page.close();
       }
 
       return {
-        pageCount: doc.pageCount(),
-        width: firstPage.width(),
-        height: firstPage.height(),
+        pageCount,
+        pageSizes,
+        maxSize: { width: maxWidth, height: maxHeight },
       };
     })
   );
@@ -100,7 +119,6 @@ class PDFRendererBackend extends OpConsumer<ClientOps> {
 
   async renderPage(viewer: Viewer, doc: Document, opts: RenderPageOpts) {
     const page = doc.page(opts.pageNum);
-
     if (!page) return;
 
     const scale = opts.scale ?? 1;
