@@ -44,6 +44,7 @@ import {
   useState,
 } from 'react';
 
+import type { SidebarTabOptions } from '../entities/sidebar-tab';
 import { ViewService } from '../services/view';
 
 interface ViewIslandRegistry {
@@ -161,19 +162,22 @@ export const ViewSidebarTab = ({
   tabId,
   icon,
   unmountOnInactive = true,
-}: React.PropsWithChildren<{
-  tabId: string;
-  icon: React.ReactNode;
-  unmountOnInactive?: boolean;
-}>) => {
+  scrollable,
+}: React.PropsWithChildren<
+  {
+    tabId: string;
+    icon: React.ReactNode;
+    unmountOnInactive?: boolean;
+  } & SidebarTabOptions
+>) => {
   const view = useService(ViewService).view;
   const activeTab = useLiveData(view.activeSidebarTab$);
   useEffect(() => {
-    view.addSidebarTab(tabId);
+    view.addSidebarTab(tabId, { scrollable });
     return () => {
       view.removeSidebarTab(tabId);
     };
-  }, [tabId, view]);
+  }, [tabId, scrollable, view]);
 
   return (
     <>

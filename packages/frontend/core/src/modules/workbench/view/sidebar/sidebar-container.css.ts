@@ -21,6 +21,10 @@ export const sidebarContainerInner = style({
   },
 });
 
+export const sidebarBodyScrollable = style({
+  height: 0,
+  flex: 1,
+});
 export const sidebarBodyTarget = style({
   display: 'flex',
   flexDirection: 'column',
@@ -29,6 +33,12 @@ export const sidebarBodyTarget = style({
   height: '100%',
   overflow: 'hidden',
   alignItems: 'center',
+  selectors: {
+    [`${sidebarContainerInner}[data-scrollable=true] &`]: {
+      height: 'auto',
+      overflow: 'visible',
+    },
+  },
 });
 
 export const borderTop = style({

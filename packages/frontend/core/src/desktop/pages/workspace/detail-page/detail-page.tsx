@@ -301,19 +301,19 @@ const DetailPageImpl = memo(function DetailPageImpl() {
         </ViewSidebarTab>
       )}
 
-      <ViewSidebarTab tabId="properties" icon={<PropertyIcon />}>
+      <ViewSidebarTab tabId="properties" icon={<PropertyIcon />} scrollable>
         <DocPropertySidebar />
       </ViewSidebarTab>
 
-      <ViewSidebarTab tabId="journal" icon={<TodayIcon />}>
+      <ViewSidebarTab tabId="journal" icon={<TodayIcon />} scrollable>
         <EditorJournalPanel />
       </ViewSidebarTab>
 
-      <ViewSidebarTab tabId="outline" icon={<TocIcon />}>
+      <ViewSidebarTab tabId="outline" icon={<TocIcon />} scrollable>
         <EditorOutlinePanel editor={editorContainer} />
       </ViewSidebarTab>
 
-      <ViewSidebarTab tabId="frame" icon={<FrameIcon />}>
+      <ViewSidebarTab tabId="frame" icon={<FrameIcon />} scrollable>
         <EditorFramePanel editor={editorContainer} />
       </ViewSidebarTab>
 

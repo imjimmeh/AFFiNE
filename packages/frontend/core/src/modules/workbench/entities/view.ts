@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { createNavigableHistory } from '../../../utils/navigable-history';
 import type { ViewIconName } from '../constants';
 import { ViewScope } from '../scopes/view';
-import { SidebarTab } from './sidebar-tab';
+import { SidebarTab, type SidebarTabOptions } from './sidebar-tab';
 
 export class View extends Entity<{
   id: string;
@@ -151,11 +151,12 @@ export class View extends Entity<{
     this.size$.next(size ?? 100);
   }
 
-  addSidebarTab(id: string) {
+  addSidebarTab(id: string, options?: SidebarTabOptions) {
     this.sidebarTabs$.next([
       ...this.sidebarTabs$.value,
       this.scope.createEntity(SidebarTab, {
         id,
+        ...options,
       }),
     ]);
     return id;
