@@ -8,7 +8,7 @@
     "@aws-sdk/client-s3": "^3.620.0",
     "@blocksuite/affine": "0.17.32",
     "@clack/core": "^0.3.4",
-    "@clack/prompts": "^0.7.0",
+    "@clack/prompts": "^0.8.0",
     "@magic-works/i18n-codegen": "^0.6.0",
     "@napi-rs/simple-git": "^0.1.16",
     "@perfsee/webpack": "^1.12.2",
