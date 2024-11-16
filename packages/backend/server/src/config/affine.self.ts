@@ -47,7 +47,9 @@ if (env.R2_OBJECT_STORAGE_ACCOUNT_ID) {
 
 AFFiNE.use('copilot', {
   openai: {
-    apiKey: '',
+    apiKey: env.OPENAI_API_KEY,
+    baseURL: env.OPENAI_BASE_URL,
+    model: env.OPENAI_MODEL,
   },
   fal: {
     apiKey: '',

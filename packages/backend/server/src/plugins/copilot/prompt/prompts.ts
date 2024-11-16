@@ -3,6 +3,8 @@ import { AiPrompt, PrismaClient } from '@prisma/client';
 
 import { PromptConfig, PromptMessage } from '../types';
 
+const env = process.env;
+const aiModel = env.OPENAI_MODEL;
 type Prompt = Omit<
   AiPrompt,
   'id' | 'createdAt' | 'updatedAt' | 'modified' | 'action' | 'config'
@@ -16,20 +18,20 @@ const workflows: Prompt[] = [
   {
     name: 'debug:action:fal-teed',
     action: 'fal-teed',
-    model: 'workflowutils/teed',
+    model: aiModel,
     messages: [{ role: 'user', content: '{{content}}' }],
   },
   {
     name: 'workflow:presentation',
     action: 'workflow:presentation',
     // used only in workflow, point to workflow graph name
-    model: 'presentation',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'workflow:presentation:step1',
     action: 'workflow:presentation:step1',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     config: { temperature: 0.7 },
     messages: [
       {
@@ -46,7 +48,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:presentation:step2',
     action: 'workflow:presentation:step2',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -65,7 +67,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:presentation:step4',
     action: 'workflow:presentation:step4',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -86,13 +88,13 @@ const workflows: Prompt[] = [
     name: 'workflow:brainstorm',
     action: 'workflow:brainstorm',
     // used only in workflow, point to workflow graph name
-    model: 'brainstorm',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'workflow:brainstorm:step1',
     action: 'workflow:brainstorm:step1',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     config: { temperature: 0.7 },
     messages: [
       {
@@ -109,7 +111,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:brainstorm:step2',
     action: 'workflow:brainstorm:step2',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     config: {
       frequencyPenalty: 0.5,
       presencePenalty: 0.5,
@@ -136,13 +138,13 @@ const workflows: Prompt[] = [
     name: 'workflow:image-sketch',
     action: 'workflow:image-sketch',
     // used only in workflow, point to workflow graph name
-    model: 'image-sketch',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'workflow:image-sketch:step2',
     action: 'workflow:image-sketch:step2',
-    model: 'gpt-4o-mini-2024-07-18',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -157,7 +159,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:image-sketch:step3',
     action: 'workflow:image-sketch:step3',
-    model: 'lora/image-to-image',
+    model: aiModel,
     messages: [{ role: 'user', content: '{{tags}}' }],
     config: {
       modelName: 'stabilityai/stable-diffusion-xl-base-1.0',
@@ -173,13 +175,13 @@ const workflows: Prompt[] = [
     name: 'workflow:image-clay',
     action: 'workflow:image-clay',
     // used only in workflow, point to workflow graph name
-    model: 'image-clay',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'workflow:image-clay:step2',
     action: 'workflow:image-clay:step2',
-    model: 'gpt-4o-mini-2024-07-18',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -194,7 +196,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:image-clay:step3',
     action: 'workflow:image-clay:step3',
-    model: 'lora/image-to-image',
+    model: aiModel,
     messages: [{ role: 'user', content: '{{tags}}' }],
     config: {
       modelName: 'stabilityai/stable-diffusion-xl-base-1.0',
@@ -210,13 +212,13 @@ const workflows: Prompt[] = [
     name: 'workflow:image-anime',
     action: 'workflow:image-anime',
     // used only in workflow, point to workflow graph name
-    model: 'image-anime',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'workflow:image-anime:step2',
     action: 'workflow:image-anime:step2',
-    model: 'gpt-4o-mini-2024-07-18',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -231,7 +233,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:image-anime:step3',
     action: 'workflow:image-anime:step3',
-    model: 'lora/image-to-image',
+    model: aiModel,
     messages: [{ role: 'user', content: '{{tags}}' }],
     config: {
       modelName: 'stabilityai/stable-diffusion-xl-base-1.0',
@@ -247,13 +249,13 @@ const workflows: Prompt[] = [
     name: 'workflow:image-pixel',
     action: 'workflow:image-pixel',
     // used only in workflow, point to workflow graph name
-    model: 'image-pixel',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'workflow:image-pixel:step2',
     action: 'workflow:image-pixel:step2',
-    model: 'gpt-4o-mini-2024-07-18',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -268,7 +270,7 @@ const workflows: Prompt[] = [
   {
     name: 'workflow:image-pixel:step3',
     action: 'workflow:image-pixel:step3',
-    model: 'lora/image-to-image',
+    model: aiModel,
     messages: [{ role: 'user', content: '{{tags}}' }],
     config: {
       modelName: 'stabilityai/stable-diffusion-xl-base-1.0',
@@ -285,19 +287,19 @@ const actions: Prompt[] = [
   {
     name: 'debug:action:dalle3',
     action: 'image',
-    model: 'dall-e-3',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'debug:action:fal-sd15',
     action: 'image',
-    model: 'lcm-sd15-i2i',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'debug:action:fal-upscaler',
     action: 'Clearer',
-    model: 'clarity-upscaler',
+    model: aiModel,
     messages: [
       {
         role: 'user',
@@ -308,19 +310,19 @@ const actions: Prompt[] = [
   {
     name: 'debug:action:fal-remove-bg',
     action: 'Remove background',
-    model: 'imageutils/rembg',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'debug:action:fal-face-to-sticker',
     action: 'Convert to sticker',
-    model: 'face-to-sticker',
+    model: aiModel,
     messages: [],
   },
   {
     name: 'Generate a caption',
     action: 'Generate a caption',
-    model: 'gpt-4o-mini-2024-07-18',
+    model: aiModel,
     messages: [
       {
         role: 'user',
@@ -332,7 +334,7 @@ const actions: Prompt[] = [
   {
     name: 'Summary',
     action: 'Summary',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -349,7 +351,7 @@ const actions: Prompt[] = [
   {
     name: 'Summary the webpage',
     action: 'Summary the webpage',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'user',
@@ -361,7 +363,7 @@ const actions: Prompt[] = [
   {
     name: 'Explain this',
     action: 'Explain this',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -377,7 +379,7 @@ const actions: Prompt[] = [
   {
     name: 'Explain this image',
     action: 'Explain this image',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -394,7 +396,7 @@ const actions: Prompt[] = [
   {
     name: 'Explain this code',
     action: 'Explain this code',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -411,7 +413,7 @@ const actions: Prompt[] = [
   {
     name: 'Translate to',
     action: 'Translate',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -456,7 +458,7 @@ const actions: Prompt[] = [
   {
     name: 'Write an article about this',
     action: 'Write an article about this',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -484,7 +486,7 @@ Rules to follow:
   {
     name: 'Write a twitter about this',
     action: 'Write a twitter about this',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -501,7 +503,7 @@ Rules to follow:
   {
     name: 'Write a poem about this',
     action: 'Write a poem about this',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -518,7 +520,7 @@ Rules to follow:
   {
     name: 'Write a blog post about this',
     action: 'Write a blog post about this',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -534,7 +536,7 @@ Rules to follow:
   {
     name: 'Write outline',
     action: 'Write outline',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -551,7 +553,7 @@ Rules to follow:
   {
     name: 'Change tone to',
     action: 'Change tone',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -586,7 +588,7 @@ Rules to follow:
   {
     name: 'Brainstorm ideas about this',
     action: 'Brainstorm ideas about this',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -612,7 +614,7 @@ Rules to follow:
   {
     name: 'Brainstorm mindmap',
     action: 'Brainstorm mindmap',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -629,7 +631,7 @@ Rules to follow:
   {
     name: 'Expand mind map',
     action: 'Expand mind map',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -650,7 +652,7 @@ Rules to follow:
   {
     name: 'Improve writing for it',
     action: 'Improve writing for it',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -666,7 +668,7 @@ Rules to follow:
   {
     name: 'Improve grammar for it',
     action: 'Improve grammar for it',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -682,7 +684,7 @@ Rules to follow:
   {
     name: 'Fix spelling for it',
     action: 'Fix spelling for it',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -698,7 +700,7 @@ Rules to follow:
   {
     name: 'Find action items from it',
     action: 'Find action items from it',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -722,7 +724,7 @@ If there are items in the content that can be used as to-do tasks, please refer 
   {
     name: 'Check code error',
     action: 'Check code error',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -739,7 +741,7 @@ If there are items in the content that can be used as to-do tasks, please refer 
   {
     name: 'Create a presentation',
     action: 'Create a presentation',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -756,7 +758,7 @@ If there are items in the content that can be used as to-do tasks, please refer 
   {
     name: 'Create headings',
     action: 'Create headings',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -772,7 +774,7 @@ If there are items in the content that can be used as to-do tasks, please refer 
   {
     name: 'Make it real',
     action: 'Make it real',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -813,7 +815,7 @@ When sent new wireframes, respond ONLY with the contents of the html file.`,
   {
     name: 'Make it real with text',
     action: 'Make it real with text',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -848,7 +850,7 @@ When sent new notes, respond ONLY with the contents of the html file.`,
   {
     name: 'Make it longer',
     action: 'Make it longer',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -876,7 +878,7 @@ Output: Generate a new version of the provided content that is longer in length 
   {
     name: 'Make it shorter',
     action: 'Make it shorter',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -903,7 +905,7 @@ Finally, you should present the final, shortened content as your response. Make 
   {
     name: 'Continue writing',
     action: 'Continue writing',
-    model: 'gpt-4o-2024-08-06',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -932,7 +934,7 @@ Finally, please only send us the content of your continuation in Markdown Format
 const chat: Prompt[] = [
   {
     name: 'debug:chat:gpt4',
-    model: 'gpt-4o',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -943,7 +945,7 @@ const chat: Prompt[] = [
   },
   {
     name: 'Chat With AFFiNE AI',
-    model: 'gpt-4o',
+    model: aiModel,
     messages: [
       {
         role: 'system',
@@ -955,7 +957,7 @@ const chat: Prompt[] = [
   // use for believer plan
   {
     name: 'Chat With AFFiNE AI - Believer',
-    model: 'gpt-o1',
+    model: aiModel,
     messages: [
       {
         role: 'system',

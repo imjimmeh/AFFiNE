@@ -161,17 +161,19 @@ AFFiNE.server.port = 3010;
 //   },
 // });
 //
-// /* Copilot Plugin */
-// AFFiNE.use('copilot', {
-//   openai: {
-//     apiKey: 'your-key',
-//   },
-//   fal: {
-//     apiKey: 'your-key',
-//   },
-//   unsplashKey: 'your-key',
-//   storage: {
-//     provider: 'cloudflare-r2',
-//     bucket: 'copilot',
-//   }
-// })
+/* Copilot Plugin */
+AFFiNE.use('copilot', {
+  openai: {
+    apiKey: process.env.OPENAI_API_KEY,
+    baseURL: process.env.OPENAI_BASE_URL,
+    model: process.env.OPENAI_MODEL,
+  },
+  fal: {
+    apiKey: 'your-key',
+  },
+  unsplashKey: 'your-key',
+  storage: {
+    provider: 'cloudflare-r2',
+    bucket: 'copilot',
+  }
+})
