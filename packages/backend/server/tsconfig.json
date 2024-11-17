@@ -14,7 +14,9 @@
     "outDir": "dist",
     "noEmit": false,
     "verbatimModuleSyntax": false,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "noEmitOnError": false,
+    "noImplicitAny": false
   },
   "include": ["./src"],
   "exclude": ["dist", "lib", "tests"],

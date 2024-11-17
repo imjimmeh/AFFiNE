@@ -91,8 +91,8 @@ export class PrismaMetricProducer implements MetricProducer {
     }
 
     for (const histogram of metrics.histograms) {
-      const boundaries = [];
-      const counts = [];
+      const boundaries: number[] = [];
+      const counts: number[] = [];
       for (const [boundary, count] of histogram.value.buckets) {
         boundaries.push(boundary);
         counts.push(count);

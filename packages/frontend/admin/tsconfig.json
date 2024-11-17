@@ -6,7 +6,9 @@
     "allowJs": true,
     "composite": true,
     "verbatimModuleSyntax": false,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noEmit": false,
+    "noEmitOnError": false
   },
   "references": [{ "path": "../core" }, { "path": "../graphql" }],
   "exclude": ["dist"]

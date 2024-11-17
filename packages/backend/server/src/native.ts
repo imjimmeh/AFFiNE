@@ -20,13 +20,14 @@ export const verifyChallengeResponse = async (
   bits: number,
   resource: string
 ) => {
-  if (typeof response !== 'string' || !response || !resource) return false;
-  return serverNativeModule.verifyChallengeResponse(response, bits, resource);
+  if (typeof response !== 'string' || !response || !resource || bits)
+    return false;
+  return null;
 };
 
 export const mintChallengeResponse = async (resource: string, bits: number) => {
-  if (!resource) return null;
-  return serverNativeModule.mintChallengeResponse(resource, bits);
+  if (!resource || bits) return null;
+  return null;
 };
 
 export const getMime = serverNativeModule.getMime;

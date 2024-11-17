@@ -166,7 +166,6 @@ AFFiNE.use('copilot', {
   openai: {
     apiKey: process.env.OPENAI_API_KEY,
     baseURL: process.env.OPENAI_BASE_URL,
-    model: process.env.OPENAI_MODEL,
   },
   fal: {
     apiKey: 'your-key',
@@ -175,5 +174,5 @@ AFFiNE.use('copilot', {
   storage: {
     provider: 'cloudflare-r2',
     bucket: 'copilot',
-  }
-})
+  },
+});

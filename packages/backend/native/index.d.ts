@@ -15,8 +15,3 @@ export declare function htmlSanitize(input: string): string
  * result binary.
  */
 export declare function mergeUpdatesInApplyWay(updates: Array<Buffer>): Buffer
-
-export declare function mintChallengeResponse(resource: string, bits?: number | undefined | null): Promise<string>
-
-export declare function verifyChallengeResponse(response: string, bits: number, resource: string): Promise<boolean>
-

@@ -49,7 +49,6 @@ AFFiNE.use('copilot', {
   openai: {
     apiKey: env.OPENAI_API_KEY,
     baseURL: env.OPENAI_BASE_URL,
-    model: env.OPENAI_MODEL,
   },
   fal: {
     apiKey: '',

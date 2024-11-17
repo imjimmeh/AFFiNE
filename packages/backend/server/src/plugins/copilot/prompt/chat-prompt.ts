@@ -15,7 +15,7 @@ Mustache.escape = (text: string) => text;
 
 function extractMustacheParams(template: string) {
   const regex = /\{\{\s*([^{}]+)\s*\}\}/g;
-  const params = [];
+  const params: string[] = [];
   let match;
 
   while ((match = regex.exec(template)) !== null) {

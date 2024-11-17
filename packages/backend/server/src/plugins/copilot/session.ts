@@ -111,7 +111,7 @@ export class ChatSession implements AsyncDisposable {
       const messages = this.state.messages;
       return messages.slice(messages.length - 1);
     }
-    const ret = [];
+    const ret: ChatMessage[] = [];
     const messages = this.state.messages.slice();
 
     let size = this.state.prompt.tokens;
@@ -185,6 +185,14 @@ export class ChatSession implements AsyncDisposable {
     await this.save?.();
   }
 }
+type ForkedSessionCondition = {
+  userId: { not: string };
+  workspaceId: string | undefined;
+  docId: string | undefined;
+  id?: { equals: string } | undefined;
+  parentSessionId: { not: null };
+  deletedAt: null;
+};
 
 @Injectable()
 export class ChatSessionService {
@@ -405,19 +413,21 @@ export class ChatSessionService {
     options?: ListHistoriesOptions,
     withPrompt = false
   ): Promise<ChatHistory[]> {
-    const extraCondition = [];
+    const extraCondition: ForkedSessionCondition[] = [];
 
     if (!options?.action && options?.fork) {
       // only query forked session if fork == true and action == false
-      extraCondition.push({
+
+      const forkedSessionCondition: ForkedSessionCondition = {
         userId: { not: userId },
         workspaceId: workspaceId,
         docId: workspaceId === docId ? undefined : docId,
         id: options?.sessionId ? { equals: options.sessionId } : undefined,
-        // should only find forked session
         parentSessionId: { not: null },
         deletedAt: null,
-      });
+      };
+
+      extraCondition.push(forkedSessionCondition);
     }
 
     return await this.db.aiSession

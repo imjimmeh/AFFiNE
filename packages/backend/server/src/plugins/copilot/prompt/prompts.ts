@@ -4,7 +4,7 @@ import { AiPrompt, PrismaClient } from '@prisma/client';
 import { PromptConfig, PromptMessage } from '../types';
 
 const env = process.env;
-const aiModel = env.OPENAI_MODEL;
+const aiModel = env.OPENAI_MODEL ?? 'qwen2.5-larger-context';
 type Prompt = Omit<
   AiPrompt,
   'id' | 'createdAt' | 'updatedAt' | 'modified' | 'action' | 'config'

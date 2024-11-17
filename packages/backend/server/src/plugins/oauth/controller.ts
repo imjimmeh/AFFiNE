@@ -45,7 +45,6 @@ export class OAuthController {
       throw new MissingOauthQueryParameter({ name: 'provider' });
     }
 
-    // @ts-expect-error safe
     const providerName = OAuthProviderName[unknownProviderName];
     const provider = this.providerFactory.get(providerName);
 

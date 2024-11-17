@@ -156,7 +156,6 @@ export function generateUserFriendlyErrors() {
 
   for (const code in USER_FRIENDLY_ERRORS) {
     errorNames.push(code.toUpperCase());
-    // @ts-expect-error allow
     const options: UserFriendlyErrorOptions = USER_FRIENDLY_ERRORS[code];
     const className = code
       .split('_')

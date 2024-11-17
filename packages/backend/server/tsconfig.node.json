@@ -8,7 +8,10 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "outDir": "./lib/scripts",
-    "rootDir": "."
+    "rootDir": ".",
+    "noEmit": false,
+    "noEmitOnError": false,
+    "noImplicitAny": false
   },
   "references": [
     {

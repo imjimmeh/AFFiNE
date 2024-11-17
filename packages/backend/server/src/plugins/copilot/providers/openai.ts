@@ -22,7 +22,7 @@ import {
 } from '../types';
 
 export const DEFAULT_DIMENSIONS = 256;
-
+const model = process.env.OPENAI_MODEL ?? 'qwen2.5-larger-context';
 const SIMPLE_IMAGE_URL_REGEX = /^(https?:\/\/|data:image\/)/;
 
 export class OpenAIProvider
@@ -40,7 +40,6 @@ export class OpenAIProvider
     CopilotCapability.ImageToText,
   ];
 
-  const model = process.env.OPENAI_MODEL;
   readonly availableModels = [
     // text to text
     'gpt-4o',

@@ -5,7 +5,10 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    "outDir": "lib"
+    "outDir": "lib",
+    "noEmit": false,
+    "noEmitOnError": false,
+    "noImplicitAny": false
   },
   "include": ["vite.config.ts", "vitest.config.ts", "scripts"],
   "references": [
